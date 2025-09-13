@@ -1,0 +1,90 @@
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { Pool } from 'pg';
+import 'dotenv/config';
+
+// @ts-expect-error to be able to run this script with tsx
+import * as schema from './schema.ts';
+
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL environment variable is not set');
+}
+
+// Use a separate pool for the seed script
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+const db = drizzle(pool, { schema });
+
+async function main() {
+  console.log('Seeding database...');
+
+  // Clear existing data to ensure a clean slate
+  await db.delete(schema.testimonials);
+  await db.delete(schema.referrals);
+
+  console.log('Cleared existing data.');
+
+  // Seed Referrals
+  const insertedReferrals = await db
+    .insert(schema.referrals)
+    .values([
+      {
+        name: 'Alice Johnson',
+        email: 'alice@example.com',
+        status: 'Converted',
+      },
+      {
+        name: 'Bob Williams',
+        email: 'bob@example.com',
+        status: 'Pending',
+      },
+      {
+        name: 'Charlie Brown',
+        email: 'charlie@example.com',
+        status: 'Pending',
+      },
+      {
+        name: 'Diana Miller',
+        email: 'diana@example.com',
+        status: 'Converted',
+      },
+      {
+        name: 'Ethan Davis',
+        email: 'ethan@example.com',
+        status: 'Pending',
+      },
+    ])
+    .returning({ id: schema.referrals.id });
+
+  console.log(`Seeded ${insertedReferrals.length} referrals.`);
+
+  // Seed Testimonials
+  const insertedTestimonials = await db
+    .insert(schema.testimonials)
+    .values([
+      {
+        author: 'Alice Johnson',
+        company: 'Tech Corp',
+        quote: 'This service is amazing! It completely changed how we approach our workflow.',
+      },
+      {
+        author: 'Diana Miller',
+        company: 'Innovate LLC',
+        quote: 'A fantastic experience from start to finish. The results speak for themselves. Highly recommended!',
+      },
+    ])
+    .returning({ id: schema.testimonials.id });
+
+  console.log(`Seeded ${insertedTestimonials.length} testimonials.`);
+
+  console.log('Database seeding complete. ✅');
+
+  // End the pool connection
+  await pool.end();
+}
+
+main().catch((err) => {
+  console.error('Error during seeding:', err);
+  process.exit(1);
+});
