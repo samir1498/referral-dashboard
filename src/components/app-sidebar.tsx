@@ -6,7 +6,6 @@ import {
   IconDashboard,
   IconFileAi,
   IconFileDescription,
-  IconHelp,
   IconInnerShadowTop,
   IconListDetails,
   IconSearch,

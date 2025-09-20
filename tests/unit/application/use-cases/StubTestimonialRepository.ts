@@ -20,11 +20,13 @@ export class StubTestimonialRepository implements ITestimonialRepository {
     this.testimonials.push(testimonial);
   }
 
-  async update(testimonial: Testimonial): Promise<void> {
-    const index = this.testimonials.findIndex((t) => t.id === testimonial.id);
+  async update(id: string, testimonial: Partial<Testimonial>): Promise<Testimonial | null> {
+    const index = this.testimonials.findIndex((t) => t.id === id);
     if (index !== -1) {
-      this.testimonials[index] = testimonial;
+      this.testimonials[index] = { ...this.testimonials[index], ...testimonial };
+      return this.testimonials[index];
     }
+    return null;
   }
 
   async delete(id: string): Promise<void> {

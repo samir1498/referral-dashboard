@@ -11,7 +11,11 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { ReferralStatus } from "@/domain/value-objects/ReferralStatus";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { EditReferral } from "./EditReferral";
@@ -34,12 +38,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Referral } from "@/domain/entities/Referral";
+
 import { editReferral } from "@/app/dashboard/referrals/actions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type Props = {
-  items: Referral[];
+  items: {
+    id: string;
+    name: string;
+    email: string;
+    date: Date;
+    status: ReferralStatus;
+    referrer: {
+      id?: string;
+      name?: string;
+      email?: string;
+    };
+  }[];
 };
 
 export default function ReferralTable({ items }: Props) {
@@ -86,7 +101,9 @@ export default function ReferralTable({ items }: Props) {
                 <TableCell>
                   <Badge
                     variant={
-                      item.status === ReferralStatus.Converted ? "default" : "secondary"
+                      item.status === ReferralStatus.Converted
+                        ? "default"
+                        : "secondary"
                     }
                   >
                     {item.status}
@@ -118,28 +135,39 @@ export default function ReferralTable({ items }: Props) {
                         <EditReferral referral={item} />
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
-                            <Button variant="ghost" className="justify-start" disabled={isDeleting}>
+                            <Button
+                              variant="ghost"
+                              className="justify-start"
+                              disabled={isDeleting}
+                            >
                               {isDeleting ? "Deleting..." : "Delete"}
                             </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                              <AlertDialogTitle>
+                                Are you absolutely sure?
+                              </AlertDialogTitle>
                               <AlertDialogDescription>
-                                This action cannot be undone. This will permanently delete the
-                                referral.
+                                This action cannot be undone. This will
+                                permanently delete the referral.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => handleDelete(item.id)} disabled={isDeleting}>
+                              <AlertDialogAction
+                                onClick={() => handleDelete(item.id)}
+                                disabled={isDeleting}
+                              >
                                 {isDeleting ? "Deleting..." : "Continue"}
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>
                         </AlertDialog>
                         <Select
-                          onValueChange={(value: ReferralStatus) => handleChangeStatus(item.id, value)}
+                          onValueChange={(value: ReferralStatus) =>
+                            handleChangeStatus(item.id, value)
+                          }
                           value={item.status}
                           disabled={isChangingStatus}
                         >

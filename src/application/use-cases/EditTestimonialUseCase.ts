@@ -5,6 +5,6 @@ export class EditTestimonialUseCase {
   constructor(private testimonialRepository: ITestimonialRepository) {}
 
   async execute(testimonial: Testimonial) {
-    return this.testimonialRepository.update(testimonial);
+    return this.testimonialRepository.update(testimonial.id, testimonial);
   }
 }
