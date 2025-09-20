@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { User } from "@/domain/entities/User";
 import { useRouter } from "next/navigation";
+import { addReferral } from "@/app/dashboard/referrals/actions";
 
 export function AddReferral() {
   const [open, setOpen] = useState(false);
@@ -49,13 +50,8 @@ export function AddReferral() {
 
     setLoading(true);
 
-    await fetch("/api/referrals", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, email, referrerId }),
-    });
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+    await addReferral(formData);
 
     setLoading(false);
     setOpen(false);
@@ -73,6 +69,7 @@ export function AddReferral() {
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
+            name="name"
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -80,6 +77,7 @@ export function AddReferral() {
             required
           />
           <Input
+            name="email"
             placeholder="Email"
             type="email"
             value={email}
@@ -91,6 +89,7 @@ export function AddReferral() {
             onValueChange={setReferrerId}
             value={referrerId}
             disabled={loading}
+            name="referrerId"
           >
             <SelectTrigger>
               <SelectValue placeholder="Referred by..." />
