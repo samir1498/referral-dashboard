@@ -50,6 +50,11 @@ const data = {
       url: "/dashboard/referrals",
       icon: IconListDetails,
     },
+    {
+      title: "Testimonials",
+      url: "/dashboard/testimonials",
+      icon: IconUsers,
+    },
   ],
   navClouds: [
     {
