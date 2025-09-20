@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useTransition } from "react";
 import {
   Table,
   TableBody,
@@ -43,12 +43,19 @@ type Props = {
 };
 
 export default function ReferralTable({ items }: Props) {
+  const [isDeleting, startDeleteTransition] = useTransition();
+  const [isChangingStatus, startStatusChangeTransition] = useTransition();
+
   const handleDelete = async (id: string) => {
-    await deleteReferral(id);
+    startDeleteTransition(async () => {
+      await deleteReferral(id);
+    });
   };
 
   const handleChangeStatus = async (id: string, status: ReferralStatus) => {
-    await editReferral({ id, status });
+    startStatusChangeTransition(async () => {
+      await editReferral({ id, status });
+    });
   };
 
   return (
@@ -111,7 +118,9 @@ export default function ReferralTable({ items }: Props) {
                         <EditReferral referral={item} />
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
-                            <Button variant="ghost" className="justify-start">Delete</Button>
+                            <Button variant="ghost" className="justify-start" disabled={isDeleting}>
+                              {isDeleting ? "Deleting..." : "Delete"}
+                            </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
@@ -123,8 +132,8 @@ export default function ReferralTable({ items }: Props) {
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => handleDelete(item.id)}>
-                                Continue
+                              <AlertDialogAction onClick={() => handleDelete(item.id)} disabled={isDeleting}>
+                                {isDeleting ? "Deleting..." : "Continue"}
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>
@@ -132,6 +141,7 @@ export default function ReferralTable({ items }: Props) {
                         <Select
                           onValueChange={(value: ReferralStatus) => handleChangeStatus(item.id, value)}
                           value={item.status}
+                          disabled={isChangingStatus}
                         >
                           <SelectTrigger className="w-full justify-start text-left px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground rounded-sm">
                             <SelectValue placeholder="Change Status" />
