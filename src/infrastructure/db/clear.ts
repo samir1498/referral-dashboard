@@ -18,7 +18,7 @@ async function main() {
     await db.delete(schema.testimonials);
     console.log("Database cleared successfully!");
     process.exit(0);
-  } catch (error) {
+  } catch {
     //ignore if table does not exist
     console.log("Database cleared successfully!");
     process.exit(0);
