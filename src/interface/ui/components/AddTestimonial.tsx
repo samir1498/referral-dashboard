@@ -20,10 +20,12 @@ export function AddTestimonial() {
   async function handleSubmit(formData: FormData) {
     setLoading(true);
     await addTestimonial({
-      name: formData.get("name") as string,
-      company: formData.get("company") as string,
-      testimonial: formData.get("testimonial") as string,
-      avatar: formData.get("avatar") as string,
+      userId: "1", // Dummy value for now
+      clientName: formData.get("clientName") as string,
+      companyName: formData.get("companyName") as string,
+      content: formData.get("content") as string,
+      rating: parseInt(formData.get("rating") as string),
+      status: formData.get("status") as string,
     });
     setLoading(false);
     setOpen(false);
@@ -39,10 +41,11 @@ export function AddTestimonial() {
           <DialogTitle>Add Testimonial</DialogTitle>
         </DialogHeader>
         <form action={handleSubmit} className="space-y-4">
-          <Input name="name" placeholder="Name" required disabled={loading} />
-          <Input name="company" placeholder="Company" required disabled={loading} />
-          <Textarea name="testimonial" placeholder="Testimonial" required disabled={loading} />
-          <Input name="avatar" placeholder="Avatar URL (optional)" disabled={loading} />
+          <Input name="clientName" placeholder="Client Name" required disabled={loading} />
+          <Input name="companyName" placeholder="Company Name" required disabled={loading} />
+          <Textarea name="content" placeholder="Content" required disabled={loading} />
+          <Input name="rating" type="number" placeholder="Rating (1-5)" required disabled={loading} />
+          <Input name="status" placeholder="Status (e.g., Approved, Pending)" required disabled={loading} />
           <Button type="submit" disabled={loading}> {loading ? "Adding..." : "Save"}</Button>
         </form>
       </DialogContent>

@@ -40,11 +40,13 @@ export function TestimonialCard({ testimonial }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{testimonial.name}</CardTitle>
-        <p className="text-sm text-muted-foreground">{testimonial.company}</p>
+        <CardTitle>{testimonial.clientName}</CardTitle>
+        <p className="text-sm text-muted-foreground">{testimonial.companyName}</p>
+        <p className="text-sm text-muted-foreground">Rating: {testimonial.rating}</p>
+        <p className="text-sm text-muted-foreground">Status: {testimonial.status}</p>
       </CardHeader>
       <CardContent>
-        <p>{testimonial.testimonial}</p>
+        <p>{testimonial.content}</p>
       </CardContent>
       <CardFooter className="flex justify-end gap-2">
         <EditTestimonial testimonial={testimonial} />

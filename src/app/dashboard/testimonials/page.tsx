@@ -14,10 +14,9 @@ export default async function TestimonialsPage() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {testimonials.map((testimonial) => (
-          <TestimonialCard key={testimonial.id} testimonial={testimonial}   />
+          <TestimonialCard key={testimonial.id} testimonial={testimonial} />
         ))}
       </div>
-      {/* EditTestimonial will be handled by a separate client component if needed */}
     </div>
   );
 }
