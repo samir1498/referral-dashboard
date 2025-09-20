@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
 "use client";
+import React, { useState, useEffect } from "react";
 
 import {
   Dialog,
@@ -10,15 +10,15 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { PlainTestimonial } from "@/domain/entities/Testimonial";
+import { Testimonial } from "@/domain/entities/Testimonial";
+import { editTestimonial } from "@/app/dashboard/testimonials/actions";
+import { DialogTrigger } from "@radix-ui/react-dialog";
 
 type Props = {
-  testimonial: PlainTestimonial | null;
-  onEdit: (testimonial: PlainTestimonial) => Promise<void>;
-  onOpenChange: (open: boolean) => void;
+  testimonial: Testimonial | null;
 };
 
-export function EditTestimonial({ testimonial, onEdit, onOpenChange }: Props) {
+export function EditTestimonial({ testimonial }: Props) {
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
   const [testimonialText, setTestimonialText] = useState("");
@@ -38,7 +38,7 @@ export function EditTestimonial({ testimonial, onEdit, onOpenChange }: Props) {
     e.preventDefault();
     if (testimonial) {
       setLoading(true);
-      await onEdit({
+      await editTestimonial({
         id: testimonial.id,
         name,
         company,
@@ -50,23 +50,43 @@ export function EditTestimonial({ testimonial, onEdit, onOpenChange }: Props) {
   };
 
   return (
-    <Dialog open={!!testimonial} onOpenChange={onOpenChange}>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button>Edit</Button>
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Edit Testimonial</DialogTitle>
         </DialogHeader>
         {testimonial && (
           <form onSubmit={handleSubmit} className="space-y-4">
-            <Input name="name" defaultValue={testimonial.name} required disabled={loading} />
-            <Input name="company" defaultValue={testimonial.company} required disabled={loading} />
+            <Input
+              name="name"
+              defaultValue={testimonial.name}
+              required
+              disabled={loading}
+            />
+            <Input
+              name="company"
+              defaultValue={testimonial.company}
+              required
+              disabled={loading}
+            />
             <Textarea
               name="testimonial"
               defaultValue={testimonial.testimonial}
               required
               disabled={loading}
             />
-            <Input name="avatar" defaultValue={testimonial.avatar ?? ""} disabled={loading} />
-            <Button type="submit" disabled={loading}> {loading ? "Saving..." : "Save"}</Button>
+            <Input
+              name="avatar"
+              defaultValue={testimonial.avatar ?? ""}
+              disabled={loading}
+            />
+            <Button type="submit" disabled={loading}>
+              {" "}
+              {loading ? "Saving..." : "Save"}
+            </Button>
           </form>
         )}
       </DialogContent>
