@@ -1,40 +1,30 @@
 "use client";
 
-import React from "react";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { addTestimonial } from "@/app/dashboard/testimonials/actions";
 
-
-type Props = {
-  onAdd: (testimonial: {
-    name: string;
-    company: string;
-    testimonial: string;
-    avatar?: string;
-  }) => void;
-};
-
-export function AddTestimonial({ onAdd }: Props) {
+export function AddTestimonial() {
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [company, setCompany] = useState("");
-  const [testimonial, setTestimonial] = useState("");
-  const [avatar, setAvatar] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onAdd({ name, company, testimonial, avatar });
+  async function handleSubmit(formData: FormData) {
+    await addTestimonial({
+      name: formData.get("name") as string,
+      company: formData.get("company") as string,
+      testimonial: formData.get("testimonial") as string,
+      avatar: formData.get("avatar") as string,
+    });
     setOpen(false);
-  };
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -43,32 +33,14 @@ export function AddTestimonial({ onAdd }: Props) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add a new testimonial</DialogTitle>
+          <DialogTitle>Add Testimonial</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-          <Input
-            placeholder="Company"
-            value={company}
-            onChange={(e) => setCompany(e.target.value)}
-          />
-          <Textarea
-            placeholder="Testimonial"
-            value={testimonial}
-            onChange={(e) => setTestimonial(e.target.value)}
-            required
-          />
-          <Input
-            placeholder="Avatar URL"
-            value={avatar}
-            onChange={(e) => setAvatar(e.target.value)}
-          />
-          <Button type="submit">Add</Button>
+        <form action={handleSubmit} className="space-y-4">
+          <Input name="name" placeholder="Name" required />
+          <Input name="company" placeholder="Company" required />
+          <Textarea name="testimonial" placeholder="Testimonial" required />
+          <Input name="avatar" placeholder="Avatar URL (optional)" />
+          <Button type="submit">Save</Button>
         </form>
       </DialogContent>
     </Dialog>

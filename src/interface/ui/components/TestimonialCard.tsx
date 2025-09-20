@@ -1,43 +1,40 @@
 "use client";
-import React from "react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import React from "react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Testimonial } from "@/domain/entities/Testimonial";
+import { deleteTestimonial } from "@/app/dashboard/testimonials/actions";
+import { EditTestimonial } from "./EditTestimonial";
 
-type Props = {
-  testimonial: Testimonial;
-  onEdit: (testimonial: Testimonial) => void;
-  onDelete: (id: string) => void;
-};
-
-export function TestimonialCard({ testimonial, onEdit, onDelete }: Props) {
+export function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center gap-4">
-          <Avatar>
-            <AvatarImage src={testimonial.avatar} />
-            <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
-          </Avatar>
-          <div>
-            <CardTitle>{testimonial.name}</CardTitle>
-            <p className="text-sm text-gray-500">{testimonial.company}</p>
-          </div>
-        </div>
+        <CardTitle>{testimonial.name}</CardTitle>
+        <p className="text-sm text-muted-foreground">{testimonial.company}</p>
       </CardHeader>
       <CardContent>
-        <p className="text-gray-600">{testimonial.testimonial}</p>
-        <div className="flex justify-end gap-2 mt-4">
-          <Button variant="outline" onClick={() => onEdit(testimonial)}>
-            Edit
-          </Button>
-          <Button variant="destructive" onClick={() => onDelete(testimonial.id)}>
+        <p>{testimonial.testimonial}</p>
+      </CardContent>
+      <CardFooter className="flex justify-end gap-2 px-2">
+        <EditTestimonial testimonial={testimonial} />
+        <form
+          action={async () => {
+            await deleteTestimonial(testimonial.id);
+          }}
+        >
+          <Button type="submit" variant="destructive">
             Delete
           </Button>
-        </div>
-      </CardContent>
+        </form>
+      </CardFooter>
     </Card>
   );
 }

@@ -1,5 +1,5 @@
-import { db } from "./db/connection";
-import { testimonials } from "./db/schema";
+import { db } from "../db/connection";
+import { testimonials } from "../db/schema";
 import { Testimonial } from "@/domain/entities/Testimonial";
 import { ITestimonialRepository } from "@/domain/repositories/ITestimonialRepository";
 import { eq } from "drizzle-orm";
