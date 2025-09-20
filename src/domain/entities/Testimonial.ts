@@ -7,7 +7,7 @@ export class Testimonial {
     public readonly content: string,
     public readonly rating: number,
     public readonly status: string,
-    public readonly createdAt: Date,
-    public readonly updatedAt: Date,
+    public readonly createdAt?: Date,
+    public readonly updatedAt?: Date,
   ) {}
 }
