@@ -1,6 +1,6 @@
 "use client";
+import React, { useState } from "react";
 
-import React from "react";
 import {
   Card,
   CardHeader,
@@ -8,12 +8,35 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Testimonial } from "@/domain/entities/Testimonial";
-import { deleteTestimonial } from "@/app/dashboard/testimonials/actions";
-import { EditTestimonial } from "./EditTestimonial";
 
-export function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+type Props = {
+  testimonial: Testimonial;
+  onEdit: (testimonial: Testimonial) => void;
+  onDelete: (id: string) => Promise<void>;
+};
+
+export function TestimonialCard({ testimonial, onEdit, onDelete }: Props) {
+  const [loading, setLoading] = useState(false);
+
+  const handleDelete = async () => {
+    setLoading(true);
+    await onDelete(testimonial.id);
+    setLoading(false);
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -23,17 +46,32 @@ export function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
       <CardContent>
         <p>{testimonial.testimonial}</p>
       </CardContent>
-      <CardFooter className="flex justify-end gap-2 px-2">
-        <EditTestimonial testimonial={testimonial} />
-        <form
-          action={async () => {
-            await deleteTestimonial(testimonial.id);
-          }}
-        >
-          <Button type="submit" variant="destructive">
-            Delete
-          </Button>
-        </form>
+      <CardFooter className="flex justify-end gap-2">
+        <Button variant="outline" onClick={() => onEdit(testimonial)}>
+          Edit
+        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive" disabled={loading}>
+              {loading ? "Deleting..." : "Delete"}
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete the
+                testimonial.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDelete}>
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </CardFooter>
     </Card>
   );
