@@ -25,6 +25,28 @@ async function main() {
 
   console.log('Cleared existing data.');
 
+  // Seed users
+  const users = await db
+    .insert(schema.users)
+    .values([
+      {
+        name: "Alice",
+        email: "alice@example.com",
+        avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+      },
+      {
+        name: "Bob",
+        email: "bob@example.com",
+        avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
+      },
+      {
+        name: "Charlie",
+        email: "charlie@example.com",
+        avatar: "https://i.pravatar.cc/150?u=a04258114e29026702d",
+      },
+    ])
+    .returning();
+
   // Seed Referrals
   const insertedReferrals = await db
     .insert(schema.referrals)
@@ -33,26 +55,31 @@ async function main() {
         name: 'Alice Johnson',
         email: 'alice@example.com',
         status: 'Converted',
+        referrerId: users[0].id,
       },
       {
         name: 'Bob Williams',
         email: 'bob@example.com',
         status: 'Pending',
+        referrerId: users[1].id,
       },
       {
         name: 'Charlie Brown',
         email: 'charlie@example.com',
         status: 'Pending',
+        referrerId: users[0].id,
       },
       {
         name: 'Diana Miller',
         email: 'diana@example.com',
         status: 'Converted',
+        referrerId: users[1].id,
       },
       {
         name: 'Ethan Davis',
         email: 'ethan@example.com',
         status: 'Pending',
+        referrerId: users[0].id,
       },
     ])
     .returning({ id: schema.referrals.id });
