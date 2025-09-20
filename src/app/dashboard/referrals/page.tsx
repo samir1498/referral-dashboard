@@ -1,11 +1,10 @@
 
-import { ReferralRepositoryDrizzle } from "@/infrastructure/repositories/ReferralRepositoryDrizzle";
+import { getReferrals } from "./actions";
 import { AddReferral } from "@/interface/ui/components/AddReferral";
 import ReferralTable from "@/interface/ui/components/ReferralTable";
 
 export default async function ReferralsPage() {
-  const repo = new ReferralRepositoryDrizzle();
-  const referrals = await repo.findAll();
+  const referrals = await getReferrals();
   const plainReferrals = referrals.map((referral) => ({
     id: referral.id,
     name: referral.name,

@@ -100,4 +100,29 @@ export class ReferralRepositoryDrizzle implements IReferralRepository {
       referrer
     );
   }
+
+  async update(id: string, data: Partial<Referral>): Promise<Referral | null> {
+    const [updatedReferral] = await db
+      .update(referrals)
+      .set({
+        name: data.name,
+        email: data.email?.toString(),
+        date: data.date,
+        status: data.status,
+        referrerId: data.referrer?.id ? parseInt(data.referrer.id, 10) : undefined,
+      })
+      .where(eq(referrals.id, parseInt(id)))
+      .returning();
+
+    if (!updatedReferral) {
+      return null;
+    }
+
+    // Re-fetch the full referral with referrer details to construct the Referral entity
+    return this.findById(id);
+  }
+
+  async delete(id: string): Promise<void> {
+    await db.delete(referrals).where(eq(referrals.id, parseInt(id)));
+  }
 }
