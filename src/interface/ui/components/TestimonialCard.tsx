@@ -21,19 +21,19 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Testimonial } from "@/domain/entities/Testimonial";
+import { deleteTestimonial } from "@/app/dashboard/testimonials/actions";
+import { EditTestimonial } from "./EditTestimonial";
 
 type Props = {
   testimonial: Testimonial;
-  onEdit: (testimonial: Testimonial) => void;
-  onDelete: (id: string) => Promise<void>;
 };
 
-export function TestimonialCard({ testimonial, onEdit, onDelete }: Props) {
+export function TestimonialCard({ testimonial }: Props) {
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
     setLoading(true);
-    await onDelete(testimonial.id);
+    await deleteTestimonial(testimonial.id);
     setLoading(false);
   };
 
@@ -47,9 +47,7 @@ export function TestimonialCard({ testimonial, onEdit, onDelete }: Props) {
         <p>{testimonial.testimonial}</p>
       </CardContent>
       <CardFooter className="flex justify-end gap-2">
-        <Button variant="outline" onClick={() => onEdit(testimonial)}>
-          Edit
-        </Button>
+        <EditTestimonial testimonial={testimonial} />
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="destructive" disabled={loading}>
