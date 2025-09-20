@@ -15,9 +15,10 @@ export const referrals = pgTable('referrals', {
 
 export const testimonials = pgTable('testimonials', {
     id: serial('id').primaryKey(),
-    quote: text('quote').notNull(),
-    author: varchar('author', { length: 255 }).notNull(),
+    name: varchar('name', { length: 255 }).notNull(),
     company: varchar('company', { length: 255 }),
+    testimonial: text('testimonial').notNull(),
+    avatar: varchar('avatar', { length: 255 }),
 });
 
 export const users = pgTable('users', {
