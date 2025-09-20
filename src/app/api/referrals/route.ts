@@ -3,6 +3,10 @@ import { ReferralRepositoryDrizzle } from "@/infrastructure/repositories/Referra
 import { UserRepositoryDrizzle } from "@/infrastructure/repositories/UserRepositoryDrizzle";
 import { AddReferralUseCase } from "@/application/use-cases/AddReferralUseCase";
 import { ListReferralsUseCase } from "@/application/use-cases/ListReferralsUseCase";
+import { Referral } from "@/domain/entities/Referral";
+import { Email } from "@/domain/value-objects/Email";
+import { ReferralStatus } from "@/domain/value-objects/ReferralStatus";
+import { User } from "@/domain/entities/User";
 
 const referralRepo = new ReferralRepositoryDrizzle();
 const userRepo = new UserRepositoryDrizzle();
@@ -15,16 +19,26 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const body = await req.json();
-  if (!body.name || !body.email || !body.referrerId)
+
+  if (!body.name || !body.email || !body.referrerId) {
     return NextResponse.json(
       { error: "name, email and referrerId required" },
       { status: 400 }
     );
+  }
+
   const useCase = new AddReferralUseCase(referralRepo, userRepo);
-  const referral = await useCase.execute({
-    name: body.name,
-    email: body.email,
-    referrerId: body.referrerId,
-  });
+
+  const referralEntity = Referral.builder()
+    .withId("")
+    .withName(body.name)
+    .withEmail(new Email(body.email))
+    .withDate(new Date())
+    .withStatus(ReferralStatus.Pending)
+    .withReferrer({ id: body.referrerId } as User)
+    .build();
+
+  const referral = await useCase.execute(referralEntity);
+
   return NextResponse.json(referral, { status: 201 });
 }

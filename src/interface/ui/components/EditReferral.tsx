@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Referral } from "@/domain/entities/Referral";
 import { editReferral } from "@/app/dashboard/referrals/actions";
 import { DialogDescription, DialogTrigger } from "@radix-ui/react-dialog";
 import { ReferralStatus } from "@/domain/value-objects/ReferralStatus";
@@ -20,9 +19,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Email } from "@/domain/value-objects/Email";
 
 type Props = {
-  referral: Referral;
+  referral: {
+    id: string;
+    name: string;
+    email: string;
+    date: Date;
+    status: ReferralStatus;
+    referrer: {
+      id?: string;
+      name?: string;
+      email?: string;
+    };
+  };
 };
 
 export function EditReferral({ referral }: Props) {
@@ -58,7 +69,9 @@ export function EditReferral({ referral }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="sm">Edit</Button>
+        <Button variant="ghost" size="sm">
+          Edit
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

@@ -1,8 +1,7 @@
-
 import { getReferrals } from "./actions";
 import { AddReferral } from "@/interface/ui/components/AddReferral";
 import ReferralTable from "@/interface/ui/components/ReferralTable";
-
+export const dynamic = 'force-dynamic'
 export default async function ReferralsPage() {
   const referrals = await getReferrals();
   const plainReferrals = referrals.map((referral) => ({

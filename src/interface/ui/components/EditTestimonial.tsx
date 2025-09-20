@@ -74,6 +74,7 @@ export function EditTestimonial({ testimonial }: Props) {
               onChange={(e) => setClientName(e.target.value)}
               required
               disabled={loading}
+              data-testid="client-name-input"
             />
             <Input
               name="companyName"
@@ -81,6 +82,7 @@ export function EditTestimonial({ testimonial }: Props) {
               onChange={(e) => setCompanyName(e.target.value)}
               required
               disabled={loading}
+              data-testid="company-name-input"
             />
             <Textarea
               name="content"
@@ -88,6 +90,7 @@ export function EditTestimonial({ testimonial }: Props) {
               onChange={(e) => setContent(e.target.value)}
               required
               disabled={loading}
+              data-testid="content-textarea"
             />
             <Input
               name="rating"
@@ -96,6 +99,7 @@ export function EditTestimonial({ testimonial }: Props) {
               onChange={(e) => setRating(parseInt(e.target.value))}
               required
               disabled={loading}
+              data-testid="rating-input"
             />
             <Input
               name="status"
@@ -103,6 +107,7 @@ export function EditTestimonial({ testimonial }: Props) {
               onChange={(e) => setStatus(e.target.value)}
               required
               disabled={loading}
+              data-testid="status-input"
             />
             <Button type="submit" disabled={loading}>
               {" "}

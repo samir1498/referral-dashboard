@@ -21,6 +21,6 @@ describe("EditTestimonialUseCase", () => {
 
     const testimonials = await testimonialRepository.findAll();
     expect(testimonials).toHaveLength(1);
-    expect(testimonials[0]).toBe(updatedTestimonial);
+    expect(testimonials[0]).toEqual(updatedTestimonial);
   });
 });
