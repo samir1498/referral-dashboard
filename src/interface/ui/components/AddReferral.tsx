@@ -26,6 +26,8 @@ export function AddReferral() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [referrerId, setReferrerId] = useState<string | undefined>(undefined);
+  const [loading, setLoading] = useState(false);
+  const [isValid, setIsValid] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -37,8 +39,15 @@ export function AddReferral() {
     fetchUsers();
   }, []);
 
+  useEffect(() => {
+    setIsValid(!!name && !!email && !!referrerId);
+  }, [name, email, referrerId]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isValid) return;
+
+    setLoading(true);
 
     await fetch("/api/referrals", {
       method: "POST",
@@ -48,6 +57,7 @@ export function AddReferral() {
       body: JSON.stringify({ name, email, referrerId }),
     });
 
+    setLoading(false);
     setOpen(false);
     router.refresh();
   };
@@ -66,6 +76,7 @@ export function AddReferral() {
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            disabled={loading}
             required
           />
           <Input
@@ -73,9 +84,14 @@ export function AddReferral() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled={loading}
             required
           />
-          <Select onValueChange={setReferrerId} value={referrerId}>
+          <Select
+            onValueChange={setReferrerId}
+            value={referrerId}
+            disabled={loading}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Referred by..." />
             </SelectTrigger>
@@ -87,7 +103,9 @@ export function AddReferral() {
               ))}
             </SelectContent>
           </Select>
-          <Button type="submit">Add</Button>
+          <Button type="submit" disabled={!isValid || loading}>
+            {loading ? "Adding..." : "Add"}
+          </Button>
         </form>
       </DialogContent>
     </Dialog>

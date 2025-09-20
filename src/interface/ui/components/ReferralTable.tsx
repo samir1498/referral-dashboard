@@ -11,10 +11,21 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import type { Referral } from "@/domain/entities/Referral";
+import { ReferralStatus } from "@/domain/value-objects/ReferralStatus";
 
 type Props = {
-  items: Referral[];
+  items: {
+    id: string;
+    name: string;
+    email: string;
+    date: Date;
+    status: ReferralStatus;
+    referrer: {
+      id: string | undefined;
+      name: string | undefined;
+      email: string | undefined;
+    };
+  }[];
 };
 
 export default function ReferralTable({ items }: Props) {
@@ -38,7 +49,7 @@ export default function ReferralTable({ items }: Props) {
             {items.map((item) => (
               <TableRow key={item.id}>
                 <TableCell>{item.name}</TableCell>
-                <TableCell>{item.email.toString()}</TableCell>
+                <TableCell>{item.email?.toString()}</TableCell>
                 <TableCell>
                   {new Date(item.date).toLocaleDateString()}
                 </TableCell>
@@ -55,9 +66,9 @@ export default function ReferralTable({ items }: Props) {
                   {item.referrer && (
                     <div className="flex items-center gap-2">
                       <Avatar>
-                        <AvatarImage src={item.referrer.avatar || undefined} />
+                        <AvatarImage src={undefined} />
                         <AvatarFallback>
-                          {item.referrer.name.charAt(0)}
+                          {item?.referrer?.name?.charAt(0)}
                         </AvatarFallback>
                       </Avatar>
                       <span>{item.referrer.name}</span>
