@@ -91,16 +91,24 @@ async function main() {
     .insert(schema.testimonials)
     .values([
       {
-        name: 'Alice Johnson',
-        company: 'Tech Corp',
-        testimonial: 'This service is amazing! It completely changed how we approach our workflow.',
-        avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026024d',
+        userId: users[0].id.toString(),
+        clientName: 'Alice Johnson',
+        companyName: 'Tech Corp',
+        content: 'This service is amazing! It completely changed how we approach our workflow.',
+        rating: 5,
+        status: 'Approved',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
-        name: 'Diana Miller',
-        company: 'Innovate LLC',
-        testimonial: 'A fantastic experience from start to finish. The results speak for themselves. Highly recommended!',
-        avatar: 'https://i.pravatar.cc/150?u=a04258114e29026702d',
+        userId: users[1].id.toString(),
+        clientName: 'Diana Miller',
+        companyName: 'Innovate LLC',
+        content: 'A fantastic experience from start to finish. The results speak for themselves. Highly recommended!',
+        rating: 4,
+        status: 'Pending',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     ])
     .returning({ id: schema.testimonials.id });

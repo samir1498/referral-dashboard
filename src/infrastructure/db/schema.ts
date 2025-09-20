@@ -15,10 +15,14 @@ export const referrals = pgTable('referrals', {
 
 export const testimonials = pgTable('testimonials', {
     id: serial('id').primaryKey(),
-    name: varchar('name', { length: 255 }).notNull(),
-    company: varchar('company', { length: 255 }),
-    testimonial: text('testimonial').notNull(),
-    avatar: varchar('avatar', { length: 255 }),
+    userId: varchar('user_id', { length: 255 }).notNull(), // Assuming userId is a string, adjust if it's an integer
+    clientName: varchar('client_name', { length: 255 }).notNull(),
+    companyName: varchar('company_name', { length: 255 }),
+    content: text('content').notNull(),
+    rating: integer('rating').notNull(),
+    status: varchar('status', { length: 255 }).notNull(), // Assuming status is a string, adjust if it's an enum
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
 export const users = pgTable('users', {
