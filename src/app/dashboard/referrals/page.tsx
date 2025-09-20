@@ -1,4 +1,4 @@
-import { Referral } from "@/domain/entities/Referral";
+
 import { ReferralRepositoryDrizzle } from "@/infrastructure/repositories/ReferralRepositoryDrizzle";
 import { AddReferral } from "@/interface/ui/components/AddReferral";
 import ReferralTable from "@/interface/ui/components/ReferralTable";

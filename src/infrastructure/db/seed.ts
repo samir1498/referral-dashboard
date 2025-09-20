@@ -91,14 +91,24 @@ async function main() {
     .insert(schema.testimonials)
     .values([
       {
-        author: 'Alice Johnson',
-        company: 'Tech Corp',
-        quote: 'This service is amazing! It completely changed how we approach our workflow.',
+        userId: users[0].id.toString(),
+        clientName: 'Alice Johnson',
+        companyName: 'Tech Corp',
+        content: 'This service is amazing! It completely changed how we approach our workflow.',
+        rating: 5,
+        status: 'Approved',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
-        author: 'Diana Miller',
-        company: 'Innovate LLC',
-        quote: 'A fantastic experience from start to finish. The results speak for themselves. Highly recommended!',
+        userId: users[1].id.toString(),
+        clientName: 'Diana Miller',
+        companyName: 'Innovate LLC',
+        content: 'A fantastic experience from start to finish. The results speak for themselves. Highly recommended!',
+        rating: 4,
+        status: 'Pending',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     ])
     .returning({ id: schema.testimonials.id });
