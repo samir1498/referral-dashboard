@@ -3,7 +3,7 @@ import { Referral } from "@/domain/entities/Referral";
 import { Email } from "@/domain/value-objects/Email";
 import { db } from "../db/connection";
 import { referrals, users } from "../db/schema";
-import { desc, eq, SQL } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { User } from "@/domain/entities/User";
 
 export class ReferralRepositoryDrizzle implements IReferralRepository {

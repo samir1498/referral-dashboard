@@ -9,7 +9,17 @@ export class TestimonialRepositoryDrizzle implements ITestimonialRepository {
     const allTestimonials = await db.select().from(testimonials);
     return allTestimonials.map(
       (t) =>
-        new Testimonial(t.id.toString(), t.name, t.company || "", t.testimonial, t.avatar || undefined)
+        new Testimonial(
+          t.id.toString(),
+          t.userId,
+          t.clientName,
+          t.companyName || "",
+          t.content,
+          t.rating,
+          t.status,
+          t.createdAt,
+          t.updatedAt
+        )
     );
   }
 
@@ -24,28 +34,62 @@ export class TestimonialRepositoryDrizzle implements ITestimonialRepository {
     }
 
     const t = testimonial[0];
-    return new Testimonial(t.id.toString(), t.name, t.company || "", t.testimonial, t.avatar || undefined);
+    return new Testimonial(
+      t.id.toString(),
+      t.userId,
+      t.clientName,
+      t.companyName || "",
+      t.content,
+      t.rating,
+      t.status,
+      t.createdAt,
+      t.updatedAt
+    );
   }
 
   async add(testimonial: Testimonial): Promise<void> {
     await db.insert(testimonials).values({
-      name: testimonial.name,
-      company: testimonial.company,
-      testimonial: testimonial.testimonial,
-      avatar: testimonial.avatar,
+      userId: testimonial.userId,
+      clientName: testimonial.clientName,
+      companyName: testimonial.companyName,
+      content: testimonial.content,
+      rating: testimonial.rating,
+      status: testimonial.status,
+      createdAt: testimonial.createdAt,
+      updatedAt: testimonial.updatedAt,
     });
   }
 
-  async update(testimonial: Testimonial): Promise<void> {
-    await db
+  async update(id: string, data: Partial<Testimonial>): Promise<Testimonial | null> {
+    const [updatedTestimonial] = await db
       .update(testimonials)
       .set({
-        name: testimonial.name,
-        company: testimonial.company,
-        testimonial: testimonial.testimonial,
-        avatar: testimonial.avatar,
+        updatedAt: new Date(),
+        clientName: data.clientName,
+        companyName: data.companyName,
+        content: data.content,
+        rating: data.rating,
+        status: data.status,
+
       })
-      .where(eq(testimonials.id, parseInt(testimonial.id)));
+      .where(eq(testimonials.id, Number(id)))
+      .returning();
+
+    if (!updatedTestimonial) {
+      return null;
+    }
+
+    return new Testimonial(
+      updatedTestimonial.id.toString(),
+      updatedTestimonial.userId,
+      updatedTestimonial.clientName,
+      updatedTestimonial.companyName || "",
+      updatedTestimonial.content,
+      updatedTestimonial.rating,
+      updatedTestimonial.status,
+      updatedTestimonial.createdAt,
+      updatedTestimonial.updatedAt
+    );
   }
 
   async delete(id: string): Promise<void> {
