@@ -1,5 +1,5 @@
 import { Email } from "../value-objects/Email";
-import { ReferralStatus } from "../value-objects/ReferralStatus";
+import { ReferralStatus, ReferralStatusType } from "../value-objects/ReferralStatus";
 import { User } from "./User";
 
 export class Referral {
@@ -8,9 +8,9 @@ export class Referral {
     public readonly name: string,
     public readonly email: Email,
     public readonly date: Date,
-    public status: ReferralStatus = ReferralStatus.Pending,
+    public status: ReferralStatusType = ReferralStatus.Pending,
     public readonly referrer?: User
-  ) {}
+  ) { }
 
   convert() {
     this.status = ReferralStatus.Converted;
@@ -26,7 +26,7 @@ class ReferralBuilder {
   private name!: string;
   private email!: Email;
   private date!: Date;
-  private status: ReferralStatus = ReferralStatus.Pending;
+  private status: ReferralStatusType = ReferralStatus.Pending;
   private referrer?: User;
 
   withId(id: string): this {
@@ -49,7 +49,7 @@ class ReferralBuilder {
     return this;
   }
 
-  withStatus(status: ReferralStatus): this {
+  withStatus(status: ReferralStatusType): this {
     this.status = status;
     return this;
   }

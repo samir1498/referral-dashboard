@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { TestimonialCard } from "@/interface/ui/components/TestimonialCard";
 import { AddTestimonial } from "@/interface/ui/components/AddTestimonial";
 import { getTestimonials } from "./actions";

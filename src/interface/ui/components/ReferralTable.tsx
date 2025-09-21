@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { ReferralStatus } from "@/domain/value-objects/ReferralStatus";
+import { ReferralStatus, ReferralStatusType } from "@/domain/value-objects/ReferralStatus";
 import {
   Popover,
   PopoverContent,
@@ -48,7 +48,7 @@ type Props = {
     name: string;
     email: string;
     date: Date;
-    status: ReferralStatus;
+    status: ReferralStatusType;
     referrer: {
       id?: string;
       name?: string;
@@ -67,7 +67,7 @@ export default function ReferralTable({ items }: Props) {
     });
   };
 
-  const handleChangeStatus = async (id: string, status: ReferralStatus) => {
+  const handleChangeStatus = async (id: string, status: ReferralStatusType) => {
     startStatusChangeTransition(async () => {
       await editReferral({ id, status });
     });
@@ -165,7 +165,7 @@ export default function ReferralTable({ items }: Props) {
                           </AlertDialogContent>
                         </AlertDialog>
                         <Select
-                          onValueChange={(value: ReferralStatus) =>
+                          onValueChange={(value: ReferralStatusType) =>
                             handleChangeStatus(item.id, value)
                           }
                           value={item.status}
