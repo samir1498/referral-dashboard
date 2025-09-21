@@ -2,6 +2,7 @@ import React from "react";
 import { TestimonialCard } from "@/interface/ui/components/TestimonialCard";
 import { AddTestimonial } from "@/interface/ui/components/AddTestimonial";
 import { getTestimonials } from "./actions";
+export const dynamic = "force-dynamic";
 
 export default async function TestimonialsPage() {
   const testimonials = await getTestimonials();
