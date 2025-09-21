@@ -2,9 +2,10 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
 import 'dotenv/config';
 
-// @ts-expect-error to be able to run this script with tsx
+// @ts-expect-error to be able to run this script with node
 import * as schema from './schema.ts';
-import { ReferralStatus } from '@/domain/value-objects/ReferralStatus.js';
+// @ts-expect-error to be able to run this script with node
+import { ReferralStatusType } from '../../domain/value-objects/ReferralStatus.ts';
 
 if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL environment variable is not set');
@@ -59,7 +60,7 @@ async function main() {
     referralsToInsert.push({
       name: `Referral ${i + 1}` as string,
       email: `referral${i + 1}@example.com` as string,
-      status: randomStatus as ReferralStatus,
+      status: randomStatus as ReferralStatusType,
       referrerId: randomUser.id as number,
       date: randomDate,
     });
