@@ -1,29 +1,10 @@
-'use client';
-
 import React, { useEffect, useState } from "react";
 import { TestimonialCard } from "@/interface/ui/components/TestimonialCard";
 import { AddTestimonial } from "@/interface/ui/components/AddTestimonial";
 import { getTestimonials } from "./actions";
-import { Testimonial } from "@/domain/entities/Testimonial"; // Assuming Testimonial type is available
 
-export default function TestimonialsPage() {
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchTestimonials = async () => {
-      setLoading(true);
-      const data = await getTestimonials();
-      setTestimonials(data);
-      setLoading(false);
-    };
-
-    fetchTestimonials();
-  }, []);
-
-  if (loading) {
-    return <div>Loading testimonials...</div>; // Or a more sophisticated loading spinner
-  }
+export default async function TestimonialsPage() {
+  const testimonials = await getTestimonials();
 
   return (
     <div>
