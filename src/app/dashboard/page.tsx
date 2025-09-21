@@ -8,6 +8,8 @@ import { ListTestimonialsUseCase } from "@/application/use-cases/ListTestimonial
 import { ReferralRepositoryDrizzle } from "@/infrastructure/repositories/ReferralRepositoryDrizzle";
 import { ListReferralsUseCase } from "@/application/use-cases/ListReferralsUseCase";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage() {
   const referralRepository = new ReferralRepositoryDrizzle();
   const listReferralsUseCase = new ListReferralsUseCase(referralRepository);
