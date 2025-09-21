@@ -21,24 +21,14 @@ import { User } from "@/domain/entities/User";
 import { useRouter } from "next/navigation";
 import { addReferral } from "@/app/dashboard/referrals/actions";
 
-export function AddReferral() {
+export function AddReferral({ users }: { users: User[] }) {
   const [open, setOpen] = useState(false);
-  const [users, setUsers] = useState<User[]>([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [referrerId, setReferrerId] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState(false);
   const [isValid, setIsValid] = useState(false);
   const router = useRouter();
-
-  useEffect(() => {
-    async function fetchUsers() {
-      const res = await fetch("/api/users");
-      const data = await res.json();
-      setUsers(data);
-    }
-    fetchUsers();
-  }, []);
 
   useEffect(() => {
     setIsValid(!!name && !!email && !!referrerId);

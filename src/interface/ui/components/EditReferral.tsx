@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { editReferral } from "@/app/dashboard/referrals/actions";
 import { DialogDescription, DialogTrigger } from "@radix-ui/react-dialog";
-import { ReferralStatus } from "@/domain/value-objects/ReferralStatus";
+import { ReferralStatus, ReferralStatusType } from "@/domain/value-objects/ReferralStatus";
 import {
   Select,
   SelectContent,
@@ -27,7 +27,7 @@ type Props = {
     name: string;
     email: string;
     date: Date;
-    status: ReferralStatus;
+    status: ReferralStatusType;
     referrer: {
       id?: string;
       name?: string;
@@ -39,7 +39,7 @@ type Props = {
 export function EditReferral({ referral }: Props) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<ReferralStatus>(ReferralStatus.Pending);
+  const [status, setStatus] = useState<ReferralStatusType>(ReferralStatus.Pending);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -97,7 +97,7 @@ export function EditReferral({ referral }: Props) {
               disabled={loading}
             />
             <Select
-              onValueChange={(value: ReferralStatus) => setStatus(value)}
+              onValueChange={(value: ReferralStatusType) => setStatus(value)}
               value={status}
               disabled={loading}
             >

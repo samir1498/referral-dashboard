@@ -11,6 +11,7 @@ import { ReferralStatus } from "@/domain/value-objects/ReferralStatus";
 import { revalidatePath } from "next/cache";
 import { UserRepositoryDrizzle } from "@/infrastructure/repositories/UserRepositoryDrizzle";
 import { User } from "@/domain/entities/User";
+import { ListUsersUseCase } from "@/application/use-cases/ListUsersUseCase";
 
 const userRepository = new UserRepositoryDrizzle();
 const referralRepository = new ReferralRepositoryDrizzle();
@@ -19,6 +20,13 @@ const addReferralUseCase = new AddReferralUseCase(referralRepository, userReposi
 const editReferralUseCase = new EditReferralUseCase(referralRepository);
 const deleteReferralUseCase = new DeleteReferralUseCase(referralRepository);
 const listReferralsUseCase = new ListReferralsUseCase(referralRepository);
+const listUsersUseCase = new ListUsersUseCase(userRepository);
+
+
+export async function getUsers(): Promise<User[]> {
+  const users = await listUsersUseCase.execute();
+  return users;
+}
 
 export async function getReferrals() {
   const referrals = await listReferralsUseCase.execute();
@@ -48,7 +56,7 @@ export async function addReferral(formData: FormData) {
 
   if (referrerId) {
     // You could fetch the real user from repo, but if only ID is known:
-    referrer = new User(referrerId, "", ""); 
+    referrer = new User(referrerId, "", "");
   }
 
   const referral = Referral.builder()
