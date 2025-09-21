@@ -1,21 +1,13 @@
-import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react"
 
-import { Badge } from "@/components/ui/badge"
 import {
   IconArrowDown,
   IconArrowUp,
-  IconCircleCheckFilled,
-  IconClock,
-  IconHourglass,
   IconUsers,
 } from "@tabler/icons-react";
 
 import {
   Card,
-  CardAction,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";

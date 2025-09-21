@@ -4,6 +4,7 @@ import 'dotenv/config';
 
 // @ts-expect-error to be able to run this script with tsx
 import * as schema from './schema.ts';
+import { ReferralStatus } from '@/domain/value-objects/ReferralStatus.js';
 
 if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL environment variable is not set');
@@ -56,10 +57,10 @@ async function main() {
     const randomStatus = referralStatuses[Math.floor(Math.random() * referralStatuses.length)];
     const randomDate = getRandomDate(sixMonthsAgo, today);
     referralsToInsert.push({
-      name: `Referral ${i + 1}`,
-      email: `referral${i + 1}@example.com`,
-      status: randomStatus,
-      referrerId: randomUser.id,
+      name: `Referral ${i + 1}` as string,
+      email: `referral${i + 1}@example.com` as string,
+      status: randomStatus as ReferralStatus,
+      referrerId: randomUser.id as number,
       date: randomDate,
     });
   }
